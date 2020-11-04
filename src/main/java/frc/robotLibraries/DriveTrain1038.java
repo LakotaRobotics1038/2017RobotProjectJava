@@ -57,7 +57,7 @@ public class DriveTrain1038 implements Subsystem {
         rightFront.
         leftFront.follow(leftBack);
         
-        differentialDrive = new DifferentialDrive(CANSparkLeftBack, CANSparkRightBack);
+        differentialDrive = new DifferentialDrive(leftBack, rightBack);
     }
 
     // Get and return distance driven by the left of the robot in inches

@@ -41,8 +41,8 @@ public class DriveTrain1038 implements Subsystem {
 
     private DriveTrain1038() {
 
-        leftSpark.setInverted(true);
-        rightSpark.setInverted(true);
+        leftSpark.setInverted(false);
+        rightSpark.setInverted(false);
 
         
         differentialDrive = new DifferentialDrive(leftSpark, rightSpark);
@@ -50,6 +50,14 @@ public class DriveTrain1038 implements Subsystem {
 
 
     // Pneumatics
+    public void gearToggle() {
+        if(!isHighGear){ 
+            highGear();
+        }
+        else {
+            lowGear();
+        }
+    }
     public void highGear() {
         isHighGear = true;
         GearChangeSolenoid.set(DoubleSolenoid.Value.kForward);

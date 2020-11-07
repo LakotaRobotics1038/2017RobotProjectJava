@@ -9,6 +9,8 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import frc.robotLibraries.*;
+import frc.subsystem.Fuel;
+//import jdk.javadoc.internal.doclets.formats.html.resources.standard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,7 +25,11 @@ public class Robot extends TimedRobot {
    * for any initialization code.
    */
   private Joystick1038 driverJoystick = new Joystick1038(0);
+  private Joystick1038 operatorJoystick = new Joystick1038(1);
   public static DriveTrain1038 robotDrive = DriveTrain1038.getInstance();
+  public static Fuel fuel = new Fuel();
+
+  boolean previouState = false;
 
   @Override
   public void robotInit() {
@@ -60,6 +66,26 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
         robotDrive.dualArcadeDrive(driverJoystick.getLeftJoystickVertical(), driverJoystick.getRightJoystickHorizontal());
+        if(driverJoystick.getRightButton() && !previouState) {
+            previouState = true;
+            robotDrive.gearToggle();
+        }
+        if(!driverJoystick.getRightButton()) {
+          previouState = false;
+        }
+        if(operatorJoystick.getAButton()) {
+          fuel.acquire(1);
+        }
+        else {
+          fuel.acquire(0);
+        }
+        fuel.shoot(operatorJoystick.getRightTrigger());
+        if(operatorJoystick.getBButton()) {
+          fuel.feed(1);
+        }
+        else {
+          fuel.feed(0);
+        }
   }
 
   /**

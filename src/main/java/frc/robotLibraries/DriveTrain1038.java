@@ -17,6 +17,8 @@ public class DriveTrain1038 implements Subsystem {
     //Change these numbers for each new robot       v
     private final int HIGH_GEAR_PORT = 0;
     private final int LOW_GEAR_PORT = 1;
+    private final int PTO_ON = 3;
+    private final int PTO_OFF = 2;
     private final static int RIGHT_SPARKS_PORT = 1;
     private final static int LEF_SPARKS_PORT = 0;
     //Change these numbers for each new robot       ^
@@ -24,6 +26,9 @@ public class DriveTrain1038 implements Subsystem {
 
     public DoubleSolenoid GearChangeSolenoid = new DoubleSolenoid(LOW_GEAR_PORT, HIGH_GEAR_PORT);
     public boolean isHighGear = false;
+
+    public DoubleSolenoid PTOChangeSolenoid = new DoubleSolenoid(PTO_OFF, PTO_ON);
+    public boolean isPTO = false;
 
     public static Spark rightSpark = new Spark(RIGHT_SPARKS_PORT);
     public static Spark leftSpark = new Spark(LEF_SPARKS_PORT);
@@ -68,6 +73,23 @@ public class DriveTrain1038 implements Subsystem {
         GearChangeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
+    public void PTOToggle() {
+        if(!isPTO){ 
+            PTOOn();
+        }
+        else {
+            PTOOff();
+        }
+    }
+    public void PTOOn() {
+        isPTO = true;
+        PTOChangeSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void PTOOff() {
+        isPTO = false;
+        PTOChangeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
 
     // Switch between drive modes
     public void driveModeToggler() {
@@ -100,5 +122,15 @@ public class DriveTrain1038 implements Subsystem {
     // Drive robot using 2 sticks (input ranges -1 to 1)
     public void dualArcadeDrive(final double yaxis, final double xaxis) {
         differentialDrive.arcadeDrive(yaxis, xaxis, true);
+    }
+
+    public void PTOControl(double speed) {
+        if(speed < 0.09) {
+            rightSpark.set(speed);
+            leftSpark.set(-speed);
+        }
+        else {
+            PTOOff();
+        }
     }
 }

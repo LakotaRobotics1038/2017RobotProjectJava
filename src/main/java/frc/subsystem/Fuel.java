@@ -15,6 +15,9 @@ public class Fuel {
     Spark leftShooter = new Spark(2);
     Spark rightShooter = new Spark(3);
     Spark feeder = new Spark(4);
+
+
+    
     public void acquire(int speed) {
         //Run Acquisition Bar
         acquisition.set(speed);

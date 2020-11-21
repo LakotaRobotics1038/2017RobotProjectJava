@@ -51,6 +51,9 @@ public class Joystick1038 extends Joystick {
         return getRawButton(X_BUTTON);
     }
 
+	public int intXButton() {
+		return getRawButton(X_BUTTON) ? 1:0;
+	}
     /**
 	 * Returns the state of the A button on the controller
 	 * 
@@ -58,6 +61,10 @@ public class Joystick1038 extends Joystick {
 	 */
 	public boolean getAButton() {
 		return getRawButton(A_BUTTON);
+	}
+
+	public int intAButton() {
+		return getRawButton(A_BUTTON) ? 1:0;
 	}
 
 	/**
@@ -69,6 +76,9 @@ public class Joystick1038 extends Joystick {
 		return getRawButton(B_BUTTON);
 	}
 
+	public int intBButton() {
+		return getRawButton(B_BUTTON) ? 1:0;
+	}
 	/**
 	 * Returns the state of the Y button on the controller
 	 * 
@@ -78,6 +88,9 @@ public class Joystick1038 extends Joystick {
 		return getRawButton(Y_BUTTON);
 	}
 
+	public int intYButton() {
+		return getRawButton(Y_BUTTON) ? 1:0;
+	}
 	/**
 	 * Returns the state of the left button on the controller
 	 * 

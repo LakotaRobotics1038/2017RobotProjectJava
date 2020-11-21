@@ -69,17 +69,15 @@ public class Robot extends TimedRobot {
     if(driverJoystick.getLeftButton() && !previousPTOState) {
       previousPTOState = true;
       robotDrive.PTOToggle();
-      System.out.println("Button pressed");
     }
     if(!driverJoystick.getLeftButton()) {
       previousPTOState = false;
-      System.out.println("Button Released");
     }
     if(robotDrive.isPTO) {
       robotDrive.PTOControl(driverJoystick.getLeftJoystickVertical());
     }
     else {
-      robotDrive.dualArcadeDrive(driverJoystick.getLeftJoystickVertical(), driverJoystick.getRightJoystickHorizontal());
+      robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.75), (driverJoystick.getRightJoystickHorizontal()));
       if(driverJoystick.getRightButton() && !previousGearState) {
         previousGearState = true;
         robotDrive.gearToggle();
@@ -88,19 +86,14 @@ public class Robot extends TimedRobot {
         previousGearState = false;
       }
     }
-        if(operatorJoystick.getAButton()) {
-          fuel.acquire(1);
-        }
-        else {
-          fuel.acquire(0);
-        }
-        fuel.shoot(operatorJoystick.getRightTrigger());
-        if(operatorJoystick.getBButton()) {
-          fuel.feed(1);
-        }
-        else {
-          fuel.feed(0);
-        }
+    
+    fuel.shoot(operatorJoystick.getRightTrigger());
+    if(operatorJoystick.getAButton()) {
+      fuel.acquire(operatorJoystick.intAButton());
+    }
+    else {
+        fuel.feed(operatorJoystick.intBButton());
+    }
   }
 
   /**
@@ -108,6 +101,13 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+  }
+
+  @Override
+  public void disabledInit() {
+    if(robotDrive.isPTO) {        //PTO off to not break robot
+      robotDrive.PTOOff();
+    }
   }
 
 }

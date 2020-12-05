@@ -126,8 +126,8 @@ public class DriveTrain1038 implements Subsystem {
 
     public void PTOControl(double speed) {
         if(speed < 0.09) {
-            rightSpark.set(speed);
-            leftSpark.set(-speed);
+            rightSpark.set(-speed);
+            leftSpark.set(speed);
         }
         else {
             PTOOff();

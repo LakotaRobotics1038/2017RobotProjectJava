@@ -77,7 +77,7 @@ public class Robot extends TimedRobot {
       robotDrive.PTOControl(driverJoystick.getLeftJoystickVertical());
     }
     else {
-      robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.75), (driverJoystick.getRightJoystickHorizontal()));
+      robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.7), (driverJoystick.getRightJoystickHorizontal()));
       if(driverJoystick.getRightButton() && !previousGearState) {
         previousGearState = true;
         robotDrive.gearToggle();

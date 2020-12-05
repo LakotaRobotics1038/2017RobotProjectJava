@@ -20,7 +20,7 @@ public class Fuel {
     
     public void acquire(int speed) {
         //Run Acquisition Bar
-        acquisition.set(speed);
+        acquisition.set(speed * .7);
     }
     
     public void shoot(double speed) {
@@ -37,6 +37,6 @@ public class Fuel {
         //Check if the shooter is running(maybe check for specific speed?)
         //Run Feeder Bar if shooter is running
         acquisition.set(speed);
-        feeder.set(speed);
+        feeder.set(speed *.7);
     }
 }

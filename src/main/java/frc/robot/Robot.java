@@ -8,9 +8,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robotLibraries.*;
-import frc.subsystem.Fuel;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.subsystem.auton.*;
 //import jdk.javadoc.internal.doclets.formats.html.resources.standard;
+import frc.robotLibraries.DriveTrain1038;
+import frc.robotLibraries.Joystick1038;
+import frc.subsystem.Fuel;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -28,13 +32,19 @@ public class Robot extends TimedRobot {
   private Joystick1038 operatorJoystick = new Joystick1038(1);
   public static DriveTrain1038 robotDrive = DriveTrain1038.getInstance();
   public static Fuel fuel = new Fuel();
+  private Auton auton = new Auton();
+  private CommandScheduler schedule = CommandScheduler.getInstance();
+  public static SequentialCommandGroup autonPath;
+  
 
   boolean previousGearState = false;
   boolean previousPTOState = false;
+  
 
   @Override
   public void robotInit() {
-
+        autonPath = new GearAuton();
+        schedule.schedule(autonPath);
   }
 
   /**
@@ -94,6 +104,9 @@ public class Robot extends TimedRobot {
     else {
         fuel.feed(operatorJoystick.intBButton());
     }
+    if(operatorJoystick.getAButton()) {
+        schedule.run();
+      }
   }
 
   /**

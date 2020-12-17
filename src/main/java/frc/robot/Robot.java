@@ -31,6 +31,7 @@ public class Robot extends TimedRobot {
 
   boolean previousGearState = false;
   boolean previousPTOState = false;
+  boolean singleController = false;
 
   @Override
   public void robotInit() {
@@ -66,7 +67,51 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if(driverJoystick.getLeftTriggerDigital() && !previousPTOState) {
+    if(driverJoystick.getLineButton() && operatorJoystick.getLineButton()) {
+     if (driverJoystick.controllerToggle(singleController)){
+       singleController=true;
+     }
+     else{
+       singleController=false;
+     }
+    }
+    if(singleController)
+    {
+      if(driverJoystick.getLeftButton() && !previousPTOState) {
+        previousPTOState = true;
+        robotDrive.PTOToggle();
+      }
+      if(!driverJoystick.getLeftButton()) {
+        previousPTOState = false;
+      }
+      if(robotDrive.isPTO) {
+        robotDrive.PTOControl(driverJoystick.getLeftJoystickVertical());
+      }
+      else {
+        robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.7), (driverJoystick.getRightJoystickHorizontal()));
+        if(driverJoystick.getRightButton() && !previousGearState) {
+          previousGearState = true;
+          robotDrive.gearToggle();
+        }
+        if(!driverJoystick.getRightButton()) {
+          previousGearState = false;
+        }
+      }
+      
+      fuel.shoot(driverJoystick.getRightTrigger());
+      if(driverJoystick.getBButton()) {
+        fuel.acquire(driverJoystick.intBButton());
+      }
+      else {
+        if(driverJoystick.getLeftTriggerDigital())
+          {fuel.feed(1);}
+        else
+          {fuel.feed(0);}
+      }
+    }
+    else
+    { 
+      if(driverJoystick.getLeftTriggerDigital() && !previousPTOState) {
       previousPTOState = true;
       robotDrive.PTOToggle();
     }
@@ -88,7 +133,7 @@ public class Robot extends TimedRobot {
     }
     
     fuel.shoot(operatorJoystick.getRightTrigger());
-    if(operatorJoystick.getAButton()) {
+    if(operatorJoystick.getBButton()) {
       fuel.acquire(operatorJoystick.intBButton());
     }
     else {
@@ -96,7 +141,7 @@ public class Robot extends TimedRobot {
         {fuel.feed(1);}
       else
         {fuel.feed(0);}
-    }
+    }}
   }
 
   /**

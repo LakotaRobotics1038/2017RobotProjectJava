@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
   boolean previousGearState = false;
   boolean previousPTOState = false;
   boolean singleController = false;
+  boolean previousControllerState = false;
 
   @Override
   public void robotInit() {
@@ -67,13 +68,17 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if(driverJoystick.getLineButton() && operatorJoystick.getLineButton()) {
+    if(driverJoystick.getLineButton() && operatorJoystick.getLineButton() && !previousControllerState) {
+     previousControllerState = true;
      if (driverJoystick.controllerToggle(singleController)){
        singleController=true;
      }
      else{
        singleController=false;
      }
+    }
+    if(previousControllerState == true && !driverJoystick.getLineButton()) {
+		previousControllerState = false;
     }
     if(singleController)
     {

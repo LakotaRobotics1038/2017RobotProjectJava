@@ -11,10 +11,10 @@ public class Gear {
         }
         return gear;
     }
-    private final int RAISED_PORT = 0;
-    private final int LOWERED_PORT = 1;
-    private final int EJECT_ON = 3;
-    private final int EJECT_OFF = 2;
+    private final int RAISED_PORT = 7;
+    private final int LOWERED_PORT = 6;
+    private final int EJECT_ON = 5;
+    private final int EJECT_OFF = 4;
     //Change these numbers for each new robot       ^
 
 
@@ -34,9 +34,11 @@ public class Gear {
     public void gateToggle() {
         if(!isRaised){ 
             raise();
+            System.out.println("pretty please");
         }
         else {
             lower();
+            System.out.println("pretty please low");
         }
     }
     private void raise() {

@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
         autonPath = new GearAuton();
         schedule.schedule(autonPath);
+        System.out.println("inity");
   }
 
   /**
@@ -122,6 +123,9 @@ public class Robot extends TimedRobot {
         else
           {fuel.feed(0);}
       }
+      if(operatorJoystick.getAButton()) {
+        schedule.run();
+      }
     }
     else
     { 
@@ -157,7 +161,15 @@ public class Robot extends TimedRobot {
         {fuel.feed(0);}
     }}
     if(operatorJoystick.getAButton()) {
-        schedule.run();
+      
+        if(schedule != null) {
+          schedule.run();
+          System.out.println("this");
+        }
+        else {
+          System.out.println("that");
+        }
+        
       }
   }
 

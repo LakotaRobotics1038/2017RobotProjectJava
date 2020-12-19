@@ -19,10 +19,13 @@ public class GateCommands extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    System.out.println("inity 2");
     timeBoi = Timer.getMatchTime();
     gear.gateToggle();
   }
-
+  @Override
+  public void execute() {
+  }
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {

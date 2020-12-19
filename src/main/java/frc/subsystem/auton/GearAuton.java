@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 public class GearAuton extends Auton{
     public GearAuton() {
         super();
-        
+        System.out.println("helllo");
         addCommands(
             new GateCommands(),
             new EjectCommands(),

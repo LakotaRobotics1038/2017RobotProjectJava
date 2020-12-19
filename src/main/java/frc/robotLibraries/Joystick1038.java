@@ -259,4 +259,11 @@ public class Joystick1038 extends Joystick {
 		setRumble(GenericHID.RumbleType.kRightRumble, speed);
 		return speed;
 	}
+
+	public boolean controllerToggle(boolean single) {
+		if(single){
+			return false;
+		}
+		return true;
+	}
 }

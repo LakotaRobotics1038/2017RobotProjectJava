@@ -39,7 +39,8 @@ public class Robot extends TimedRobot {
 
   boolean previousGearState = false;
   boolean previousPTOState = false;
-  
+  boolean singleController = false;
+  boolean previousControllerState = false;
 
   @Override
   public void robotInit() {
@@ -76,11 +77,59 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopPeriodic() {
-    if(driverJoystick.getLeftButton() && !previousPTOState) {
+    if(driverJoystick.getLineButton() && operatorJoystick.getLineButton() && !previousControllerState) {
+     previousControllerState = true;
+     if (driverJoystick.controllerToggle(singleController)){
+       singleController=true;
+     }
+     else{
+       singleController=false;
+     }
+    }
+    if(previousControllerState == true && !driverJoystick.getLineButton()) {
+		previousControllerState = false;
+    }
+    if(singleController)
+    {
+      if(driverJoystick.getLeftButton() && !previousPTOState) {
+        previousPTOState = true;
+        robotDrive.PTOToggle();
+      }
+      if(!driverJoystick.getLeftButton()) {
+        previousPTOState = false;
+      }
+      if(robotDrive.isPTO) {
+        robotDrive.PTOControl(driverJoystick.getLeftJoystickVertical());
+      }
+      else {
+        robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.7), (driverJoystick.getRightJoystickHorizontal()));
+        if(driverJoystick.getRightButton() && !previousGearState) {
+          previousGearState = true;
+          robotDrive.gearToggle();
+        }
+        if(!driverJoystick.getRightButton()) {
+          previousGearState = false;
+        }
+      }
+      
+      fuel.shoot(driverJoystick.getRightTrigger());
+      if(driverJoystick.getBButton()) {
+        fuel.acquire(driverJoystick.intBButton());
+      }
+      else {
+        if(driverJoystick.getLeftTriggerDigital())
+          {fuel.feed(1);}
+        else
+          {fuel.feed(0);}
+      }
+    }
+    else
+    { 
+      if(driverJoystick.getLeftTriggerDigital() && !previousPTOState) {
       previousPTOState = true;
       robotDrive.PTOToggle();
     }
-    if(!driverJoystick.getLeftButton()) {
+    if(!driverJoystick.getLeftTriggerDigital()) {
       previousPTOState = false;
     }
     if(robotDrive.isPTO) {
@@ -88,22 +137,25 @@ public class Robot extends TimedRobot {
     }
     else {
       robotDrive.dualArcadeDrive((driverJoystick.getLeftJoystickVertical()*.7), (driverJoystick.getRightJoystickHorizontal()));
-      if(driverJoystick.getRightButton() && !previousGearState) {
+      if(driverJoystick.getRightTriggerDigital() && !previousGearState) {
         previousGearState = true;
         robotDrive.gearToggle();
       }
-      if(!driverJoystick.getRightButton()) {
+      if(!driverJoystick.getRightTriggerDigital()) {
         previousGearState = false;
       }
     }
     
     fuel.shoot(operatorJoystick.getRightTrigger());
-    if(operatorJoystick.getAButton()) {
-      fuel.acquire(operatorJoystick.intAButton());
+    if(operatorJoystick.getBButton()) {
+      fuel.acquire(operatorJoystick.intBButton());
     }
     else {
-        fuel.feed(operatorJoystick.intBButton());
-    }
+      if(operatorJoystick.getLeftTriggerDigital())
+        {fuel.feed(1);}
+      else
+        {fuel.feed(0);}
+    }}
     if(operatorJoystick.getAButton()) {
         schedule.run();
       }
